@@ -1,0 +1,11 @@
+name: skript-bedrock
+version: '1.0.0'
+main: com.github.cedricrev.skriptbedrock.SkriptBedrockPlugin
+api-version: '1.21'
+prefix: skript-bedrock
+authors: [ CedricRev ]
+description: Simple implementation to support Bedrock players through Geyser and Floodgate.
+website: https://github.com/CedricRev
+depend:
+  - Skript
+  - floodgate
