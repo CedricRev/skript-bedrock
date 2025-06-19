@@ -15,6 +15,8 @@ import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.variables.Variables;
 import ch.njol.util.Kleenean;
+
+import java.net.URL;
 import java.util.List;
 
 import com.github.cedricrev.skriptbedrock.elements.events.FormSubmitEvent;
@@ -78,10 +80,15 @@ public class SecFormButton
                     }
                 }
             }
-            if (this.image == null) {
-                ((SimpleForm.Builder)form.getForm()).button((String)this.text.getSingle(event));
+
+            if (this.image != null) {
+                if (!isValidURL(this.image.getSingle(event))) {
+                    ((SimpleForm.Builder)form.getForm()).button((String)this.text.getSingle(event), FormImage.Type.PATH, (String)this.image.getSingle(event));
+                } else {
+                    ((SimpleForm.Builder)form.getForm()).button((String)this.text.getSingle(event), FormImage.Type.URL, (String)this.image.getSingle(event));
+                }
             } else {
-                ((SimpleForm.Builder)form.getForm()).button((String)this.text.getSingle(event), FormImage.Type.URL, (String)this.image.getSingle(event));
+                ((SimpleForm.Builder) form.getForm()).button((String) this.text.getSingle(event));
             }
         }
         if (this.hasSection()) {
@@ -102,6 +109,15 @@ public class SecFormButton
 
     public String toString(Event e, boolean debug) {
         return "create form button " + this.text.toString(e, debug);
+    }
+
+    public static boolean isValidURL(String url) {
+        try {
+            new URL(url).toURI(); // Ensures valid syntax
+            return true;
+        } catch (Exception e) {
+            return false; // Invalid URL
+        }
     }
 
     static {
